@@ -6,6 +6,8 @@ import { User } from "@app/_models";
 import { AuthenticationService, AppService } from "@app/_services";
 import { AppUrlService } from "@app/_services/app-url.service";
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 declare var Treant: any;
 
 @Component({ 
@@ -14,11 +16,12 @@ declare var Treant: any;
   styleUrls: ['./home.component.scss', '../../assets/js/Treant.css'] 
 })
 export class HomeComponent {
+  search: FormGroup;
   loading = false;
   users: User[];
   chart_config: any;
 
-  constructor(private appUrl: AppUrlService, private appService: AppService) {}
+  constructor(private appUrl: AppUrlService, private appService: AppService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.loading = true;
@@ -30,6 +33,9 @@ export class HomeComponent {
         this.users = users;
       });
       this.treantTree();
+      this.search = this.formBuilder.group({
+        searchText: ['',]
+    });
   }
 
   treantTree() {
@@ -136,5 +142,7 @@ export class HomeComponent {
       ciso4
     ];
     return new Treant(this.chart_config);
+  }
+  fetch(){
   }
 }

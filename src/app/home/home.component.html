@@ -9,5 +9,20 @@
     </div>
 </div> -->
 <div class="">
+    <form [formGroup]="search" (ngSubmit)="fetch()">
+        <div class="search-sec">
+            <div class="col-md-3 form-group search-field">
+                <!-- <label for="search-text">Search</label> -->
+                <input type="text" formControlName="searchText" class="form-control" placeholder="Search" />
+            </div>
+            <div class="col-md-3">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Fetch
+                </button>
+            </div>
+        </div>
+    </form>
+
     <div class="chart" id="basic-example"></div>
 </div>
