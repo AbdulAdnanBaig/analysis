@@ -5,3 +5,9 @@ a { cursor: pointer }
     flex-flow: row nowrap;
     justify-content: flex-end;
 }
+#particles-js canvas{
+    position: absolute;
+    width: 80% !important;
+    height: 90% !important;
+    z-index: -1;
+}
