@@ -10,36 +10,41 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 declare var Treant: any;
 
-@Component({ 
+@Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'home.component.html',
-  styleUrls: ['./home.component.scss', '../../assets/js/Treant.css'] 
+  styleUrls: ['./home.component.scss', '../../assets/js/Treant.css']
 })
 export class HomeComponent {
   search: FormGroup;
   loading = false;
   users: User[];
   chart_config: any;
+  data: any = [];
+  options: any;
+  finalArray: any = [];
+  payload: any = [];
 
-  constructor(private appUrl: AppUrlService, private appService: AppService, private formBuilder: FormBuilder) {}
+  constructor(private appUrl: AppUrlService, private appService: AppService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.loading = true;
     this.appService
       .getAll(this.appUrl.geturlfunction("GET_USERS"))
       .subscribe((users) => {
-          console.log(users)
+        console.log(users)
         this.loading = false;
         this.users = users;
       });
-      this.treantTree();
-      this.search = this.formBuilder.group({
-        searchText: ['',]
+    this.test();
+    this.treantTree();
+    this.search = this.formBuilder.group({
+      searchText: ['',]
     });
   }
 
-  treantTree() {
-    var config = {
+  test() {
+    this.options = {
       container: "#basic-example",
 
       connectors: {
@@ -48,101 +53,54 @@ export class HomeComponent {
       node: {
         HTMLclass: 'nodeExample1'
       }
-    },
-      ceo = {
-        text: {
-          name: "Mark Hill",
-          title: "Chief executive officer",
-          // contact: "Tel: 01 213 123 134",
+    }
+    // this.formLoop();
+    this.payload = {
+      text: { name: "Parent node" },   // The parent Node
+      children: [ //followed by the first level of children
+        {
+          text: { name: "First child" }
         },
-      },
+        {
+          text: { name: "Second child" },  // second node in the tree
+          children: [  // nested children for the second node
+            {
+              text: { name: "second sub child 1" }, // level 3 node branching from the second node
+              children: [  // nested children
+                {
+                  text: { name: "second sub child 1a" }
+                }
+              ]
+            },
+            {
+              text: { name: "second sub child 2" }
+            },
+            {
+              text: { name: "second sub child 3" }
+            },
+          ]
+        }
+      ]
+    }
+  }
 
-      cto = {
-        parent: ceo,
-        text: {
-          name: "Joe Linux",
-          title: "Chief Technology Officer",
+  treantTree() {
+    this.chart_config = {
+      chart: {
+        container: "#basic-example",
+        connectors: {
+          type: 'bCurve'
         },
-        stackChildren: true,
-      },
-      cbo = {
-        parent: ceo,
-        stackChildren: true,
-        text: {
-          name: "Linda May",
-          title: "Chief Business Officer",
+        node: { 
+          // HTMLclass: 'nodeExample1',
+          // collapsable: true
         },
       },
-      cdo = {
-        parent: ceo,
-        text: {
-          name: "John Green",
-          title: "Chief accounting officer",
-          // contact: "Tel: 01 213 123 134",
-        },
-      },
-      cio = {
-        parent: cto,
-        text: {
-          name: "Ron Blomquist",
-          title: "Chief Information Security Officer"
-        },
-      },
-      ciso = {
-        parent: cto,
-        text: {
-          name: "Michael Rubin",
-          title: "Chief Innovation Officer",
-          // contact: { val: "we@aregreat.com", href: "mailto:we@aregreat.com" }
-        },
-      },
-      cio2 = {
-        parent: cdo,
-        text: {
-          name: "Erica Reel",
-          title: "Chief Customer Officer"
-        },
-        // link: {
-        //   href: "http://www.google.com"
-        // },
-      },
-      ciso2 = {
-        parent: cbo,
-        text: {
-          name: "Alice Lopez",
-          title: "Chief Communications Officer"
-        },
-      },
-      ciso3 = {
-        parent: cbo,
-        text: {
-          name: "Mary Johnson",
-          title: "Chief Brand Officer"
-        },
-      },
-      ciso4 = {
-        parent: cbo,
-        text: {
-          name: "Kirk Douglas",
-          title: "Chief Business Development Officer"
-        },
-      }
-
-    this.chart_config = [
-      config,
-      ceo,
-      cto,
-      cbo,
-      cdo,
-      cio,
-      ciso,
-      cio2,
-      ciso2,
-      ciso3,
-      ciso4
-    ];
+      nodeStructure: this.payload
+    }
     return new Treant(this.chart_config);
   }
-  fetch(){
+  fetch() {
+    console.log('fetch is called')
   }
 }

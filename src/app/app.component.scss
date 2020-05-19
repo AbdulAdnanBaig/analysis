@@ -1,0 +1,12 @@
+::ng-deep .nav-link.active{
+    border-bottom: 3px solid #e9ab15;
+    font-weight: 500;
+    color: #fff;
+}
+
+::ng-deep .navbar{
+    padding-bottom: 0px !important;
+}
+.menu-items ul{
+    display: flex;
+}
